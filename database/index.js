@@ -1,23 +1,19 @@
-// const faker = require('faker');
-
+const faker = require('faker');
 const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/soundcloud', {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false});
 
-mongoose.connect('mongodb://localhost/soundcloud', {
-  useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false,
-});
-
-const userSchema = mongoose.Schema({
+let userSchema = mongoose.Schema({
   id: Number,
   handle: String,
   name: String,
   image_url: String,
   track_count: Number,
   follower_count: Number,
-  join_date: Date,
+  join_date: Date
 });
 
-const User = mongoose.model('User', userSchema);
-// const users = [];
+let User = mongoose.model('User', userSchema);
+let users = [];
 
 // for (var i=1; i<101; i++) {
 // var id = i;
@@ -34,28 +30,27 @@ const User = mongoose.model('User', userSchema);
 
 // User.insertMany(users);
 
-const getUserById = (ID, callback) => {
-  User.findOne({ id: ID }).exec(callback);
-};
+let getUserById = (ID, callback) => {
+  User.findOne({id: ID}).exec(callback);
+}
 
-const getUserByName = (username, callback) => {
-  User.findOne({ name: username }).exec(callback);
-};
+let getUserByName = (username, callback) => {
+  User.findOne({name: username}).exec(callback);
+}
 
-const getAllUsers = (callback) => {
+let getAllUsers = (callback) => {
   User.find({}).exec(callback);
-};
+}
 
-const decrementFollowers = (username, callback) => {
-  User.findOneAndUpdate({ name: username }, { $inc: { follower_count: -1 } }).exec(callback);
-};
+let decrementFollowers = (username, callback) => {
+  User.findOneAndUpdate({name: username}, { $inc: {follower_count: -1}}).exec(callback);
+}
 
-const incrementFollowers = (username, callback) => {
-  User.findOneAndUpdate({ name: username }, { $inc: { follower_count: 1 } }).exec(callback);
-};
+let incrementFollowers = (username, callback) => {
+  User.findOneAndUpdate({name: username}, { $inc: {follower_count: 1}}).exec(callback);
+}
 
 module.exports.getUserById = getUserById;
 module.exports.decrementFollowers = decrementFollowers;
 module.exports.incrementFollowers = incrementFollowers;
 module.exports.getAllUsers = getAllUsers;
-module.exports.getUserByName = getUserByName;

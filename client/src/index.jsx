@@ -11,14 +11,10 @@ class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id: '5e321f038373796dfd05d97c',
-      id: 101,
-      handle: 'Englebert Humperdink',
       username: 'JimHendrix',
       photo: 'https://unsplash.it/120/120/?random',
       followers: 741,
       tracks: 4,
-      join_date: "2013-11-04T06:22:26.644Z",
       isFollowed: false
     }
     this.handleAddFollowClick = this.handleAddFollowClick.bind(this);
@@ -29,9 +25,9 @@ class User extends React.Component {
     if (this.state.isFollowed === true) {
     this.setState({isFollowed: !this.state.isFollowed, followers: this.state.followers - 1});
     $.ajax({
-      url: `/decrementFollowers/${this.state.username}`,
+      url: '/decrementFollowers',
       type: 'PATCH',
-      // data: { username: this.state.username },
+      data: { username: this.state.username },
       success: (status) => {
         console.log('This is the status inside the succes of PATCH decrement request": ', status);
       },
@@ -55,34 +51,10 @@ class User extends React.Component {
   }
   }
 
-  componentDidMount(){
-    $.ajax({
-      url: '/getUserById/101',
-      type: 'GET',
-      success: (results) => {
-        console.log('This is the result of /getUserById request: ', results);
-        this.setState({
-          _id: results._id,
-          id: results.id,
-          handle: results.handle,
-          username: results.name,
-          photo: results.image_url,
-          followers: results.follower_count,
-          tracks: results.track_count,
-          join_date: results.join_date
-        });
-      },
-      error: (error) => {
-        console.log('This is the error from the /getUserById request: ', error);
-      }
-    });
-  }
-
-
   render() {
 
-    return (
 
+    return (
       <div id="user_module" className="l-about-left user container">
         <div className="listenArtistInfo">
           <div className="user photo container">
@@ -113,6 +85,14 @@ class User extends React.Component {
           </div>
 
           <FollowButton handleClick={this.handleAddFollowClick} isFollowed={this.state.isFollowed} />
+
+            {/* <div className="user_add_follow_button">
+              <button className="user_add_follow_btn">
+                <span className="user_add_follow_icon_in_button">
+                  <a href=""><i className="fal fa-user-plus add_follow_icon"></i></a>
+                </span> Follow</button>
+            </div> */}
+
 
           <div className="report_button_container">
             <span className="report_button_span">
